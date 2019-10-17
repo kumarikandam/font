@@ -65,7 +65,7 @@ function font(url, defaultRanges = {}) {
       return acc
     }, {})
 
-    const body = document.body ? document.body.innerText : ''
+    const body = document.body ? document.body.textContent : ''
     const validRanges = body ? Object.keys(ranges).reduce((acc, range) => {
       const reg = ranges[range]
       const valid = reg.test(body)

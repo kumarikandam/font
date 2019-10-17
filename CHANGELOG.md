@@ -1,5 +1,9 @@
 ## 17 October 2019
 
+### [1.0.3](https://github.com/kumarikandam/font/compare/v1.0.2...v1.0.3)
+
+- [fix] Use `textContent` instead of `innerText` to prevent layout reflow.
+
 ### [1.0.2](https://github.com/kumarikandam/font/compare/v1.0.1...v1.0.2)
 
 - [build] Build the package.
