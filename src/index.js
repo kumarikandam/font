@@ -88,8 +88,8 @@ export default function font(url, defaultRanges = {}) {
       link.href = address
       link.rel = 'preload'
       link.as = 'font'
-      performance.mark('link-preload-start'+i)
-      link.onload = () => loadedCb(i)
+      performance.mark('link-preload-start'+(i+1))
+      link.onload = () => loadedCb(i+1)
       link.setAttribute('crossorigin', true)
       fragment.appendChild(link)
     })
