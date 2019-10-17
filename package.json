@@ -2,7 +2,7 @@
   "name": "@lemuria/font",
   "version": "0.0.0-pre",
   "description": "Loads A Web Font Stylesheet (e.g., Google Fonts) Without Render Blocking And Multiple Layout Updates.",
-  "main": "build/index.js",
+  "main": "compile/index.js",
   "module": "src/index.js",
   "scripts": {
     "t": "zoroaster -a",
@@ -10,6 +10,8 @@
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
     "test-build": "ALAMODE_ENV=test-build yarn test",
+    "compile": "depack-dev src/font -o compile -a -i",
+    "depack": "depack-dev src/depack -o compile/index.js -a -c -O 2015",
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc -o README.md",
     "b": "alamode src -o build -s",
@@ -21,6 +23,7 @@
   },
   "files": [
     "build",
+    "compile",
     "src",
     "types/externs.js"
   ],
@@ -38,8 +41,10 @@
   "bugs": {
     "url": "https://github.com/kumarikandam/font/issues"
   },
-  "homepage": "https://github.com/kumarikandam/font#readme",
+  "homepage": "https://www.artd.eco",
   "devDependencies": {
+    "@depack/render": "^1.3.3",
+    "@idio/idio": "^0.1.0",
     "alamode": "^3.0.0",
     "documentary": "^1.32.2",
     "eslint-config-artdeco": "1.0.1",

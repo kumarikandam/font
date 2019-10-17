@@ -1,6 +1,18 @@
 ## API
 
-The package is available by importing its default function:
+The compiled function should be added to the head:
+
+%EXAMPLE: compile/font%
+
+Then it can be called:
+
+```js
+window['@lemuria/font']('https://fonts.googleapis.com/css?display=swap&family=Gentium+Basic')
+```
+
+`Display:swap` does not really matter, it is there to please _Lighthouse_.
+
+If a function needs to be added on the server for SSR, it can be imported via the default export (see the SSR example below):
 
 ```js
 import font from '@lemuria/font'
@@ -8,18 +20,8 @@ import font from '@lemuria/font'
 
 %~%
 
-```## font
-[
-  ["arg1", "string"],
-  ["arg2?", "boolean"]
-]
-```
+<typedef noArgTypesInToc>types/api.xml</typedef>
 
-Call this function to get the result you want.
-
-%TYPEDEF types/index.xml%
-
-%EXAMPLE: example, ../src => @lemuria/font%
-%FORK example%
+%EXAMPLE: example%
 
 %~%
