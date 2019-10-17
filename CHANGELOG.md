@@ -1,3 +1,9 @@
+## 17 October 2019
+
+### [1.0.0](https://github.com/kumarikandam/font/compare/v0.0.0-pre...v1.0.0)
+
+- [package] Publish the initial version of the package.
+
 ## 16 October 2019
 
 ### 0.0.0-pre
