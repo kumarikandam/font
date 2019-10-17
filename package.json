@@ -1,6 +1,6 @@
 {
   "name": "@lemuria/font",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Loads A Web Font Stylesheet (e.g., Google Fonts) Without Render Blocking And Multiple Layout Updates.",
   "main": "compile/index.js",
   "module": "src/index.js",
