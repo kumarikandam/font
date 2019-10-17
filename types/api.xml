@@ -1,4 +1,4 @@
-<types namespace="@lemuria/font">
+<types namespace="_lemuria">
   <method name="font">
     <arg string name="url">
       The full url of the web-font to load, e.g.,

@@ -1,4 +1,6 @@
-import font from '../src'
+import font, {
+  debug as fontDebug, // unminified version
+} from '../src'
 import idio from '@idio/idio'
 import render from '@depack/render'
 

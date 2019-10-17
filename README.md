@@ -38,10 +38,10 @@ yarn add @lemuria/font
 The compiled function should be added first thing to the head:
 
 ```js
-(function(){function u(e){var h=0;return function(){return h<e.length?{done:!1,value:e[h++]}:{done:!0}}}function v(e){var h="undefined"!=typeof Symbol&&Symbol.iterator&&e[Symbol.iterator];return h?h.call(e):{next:u(e)}};window["@lemuria/font"]=function(e){function h(n,p,a){a=void 0===a?"":a;performance.mark("xhr-start"+a);var c=new XMLHttpRequest;c.onreadystatechange=function(){4==c.readyState&&(200==c.status?(p(c.responseText),performance.mark("xhr-end"+a),performance.measure("xhr"+a,"xhr-start"+a,"xhr-end"+a)):console.error("Error loading webfont: server responded with code %s at %s",c.status,n))};c.open("GET",n);try{c.send(null)}catch(k){console.error(k)}}performance.mark("agf-start");(function(n,p){function a(d){d&&
-(performance.mark("link-preload-end"+d),performance.measure("link-preload","link-preload-start"+d,"link-preload-end"+d));r++;r>=k.length&&(d=document.createElement("style"),d.innerHTML=c,document.head.appendChild(d),performance.mark("agf-end"),performance.measure("@lemuria/font","agf-start","agf-end"))}var c;h(n.href,function(d){c=d;for(var w=/url\((.+?)\).*?;\s+unicode-range: (.+?);/g,m={},t=[],q;q=w.exec(d);){var l=v(q);l.next();q=l.next().value;l=l.next().value;t.push({url:q,a:l});m[l]=1}m=Object.keys(m).reduce(function(b,
-f){var g=f.split(/,\s/).map(function(x){return x.replace("U+","\\u").replace("-","-\\u")}).join("").toLowerCase();b[f]=new RegExp("["+g+"]");return b},{});var y=document.body?document.body.innerText:"",z=Object.keys(m).reduce(function(b,f){m[f].test(y)&&(b[f]=!0);return b},{});k=t.filter(function(b){return b.a in z}).map(function(b){return b.url});if(!k.length)return a();k.forEach(function(b,f){var g=document.createElement("link");g.href=b;g.rel="preload";g.as="font";performance.mark("link-preload-start"+
-f);g.onload=function(){return a(f)};g.setAttribute("crossorigin",!0);document.head.appendChild(g)})},"-"+(void 0===p?"link":p));var k=[],r=0})({href:e},"js")};}).call(this);
+(function(){function v(g){var e=0;return function(){return e<g.length?{done:!1,value:g[e++]}:{done:!0}}}function w(g){var e="undefined"!=typeof Symbol&&Symbol.iterator&&g[Symbol.iterator];return e?e.call(g):{next:v(g)}};window["@lemuria/font"]=function(g,e){function q(b){b&&(performance.mark("link-preload-end"+b),performance.measure("link-preload","link-preload-start"+b,"link-preload-end"+b));r++;r>=n.length&&(b=document.createElement("style"),b.innerHTML=p,document.head.appendChild(b),performance.mark("agf-end"),performance.measure("@lemuria/font","agf-start","agf-end"))}function x(b,k,a){a=void 0===a?"":a;performance.mark("xhr-start"+a);var f=new XMLHttpRequest;f.onreadystatechange=function(){4==f.readyState&&
+(200==f.status?(k(f.responseText),performance.mark("xhr-end"+a),performance.measure("xhr"+a,"xhr-start"+a,"xhr-end"+a)):console.error("Error loading webfont: server responded with code %s at %s",f.status,b))};f.open("GET",b);try{f.send(null)}catch(l){console.error(l)}}function y(b){for(var k=/url\((.+?)\).*?;\s+unicode-range: (.+?);/g,a={},f=[],l;l=k.exec(b);){var m=w(l);m.next();l=m.next().value;m=m.next().value;f.push({url:l,a:m});a[m]=1}a=Object.keys(a).reduce(function(c,d){var h=d.split(/,\s/).map(function(z){return z.replace("U+",
+"\\u").replace("-","-\\u")}).join("").toLowerCase();c[d]=new RegExp("["+h+"]");return c},{});var t=document.body?document.body.innerText:"",A=t?Object.keys(a).reduce(function(c,d){a[d].test(t)&&(c[d]=!0);return c},{}):Object.keys(a).reduce(function(c,d){d in e&&(c[d]=!0);return c},{});n=f.filter(function(c){return c.a in A}).map(function(c){return c.url});if(!n.length)return q();var u=document.createDocumentFragment();n.forEach(function(c,d){var h=document.createElement("link");h.href=c;h.rel="preload";
+h.as="font";performance.mark("link-preload-start"+d);h.onload=function(){return q(d)};h.setAttribute("crossorigin",!0);u.appendChild(h)});document.head.appendChild(u)}e=void 0===e?{}:e;performance.mark("agf-start");var p;(function(b,k){x(b.href,function(a){p=a;y(p)},"-"+(void 0===k?"link":k))})({href:g},"js");var n=[],r=0};}).call(this);
 
 //# sourceMappingURL=font.js.map
 ```
@@ -99,7 +99,9 @@ import font from '@lemuria/font'
 ```
 
 ```jsx
-import font from '@lemuria/font'
+import font, {
+  debug as fontDebug, // unminified version
+} from '@lemuria/font'
 import idio from '@idio/idio'
 import render from '@depack/render'
 
