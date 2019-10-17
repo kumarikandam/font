@@ -35,7 +35,7 @@ yarn add @lemuria/font
 
 ## API
 
-The compiled function should be added to the head:
+The compiled function should be added first thing to the head:
 
 ```js
 (function(){function u(e){var h=0;return function(){return h<e.length?{done:!1,value:e[h++]}:{done:!0}}}function v(e){var h="undefined"!=typeof Symbol&&Symbol.iterator&&e[Symbol.iterator];return h?h.call(e):{next:u(e)}};window["@lemuria/font"]=function(e){function h(n,p,a){a=void 0===a?"":a;performance.mark("xhr-start"+a);var c=new XMLHttpRequest;c.onreadystatechange=function(){4==c.readyState&&(200==c.status?(p(c.responseText),performance.mark("xhr-end"+a),performance.measure("xhr"+a,"xhr-start"+a,"xhr-end"+a)):console.error("Error loading webfont: server responded with code %s at %s",c.status,n))};c.open("GET",n);try{c.send(null)}catch(k){console.error(k)}}performance.mark("agf-start");(function(n,p){function a(d){d&&
@@ -54,6 +54,30 @@ window['@lemuria/font']('https://fonts.googleapis.com/css?display=swap&family=Ge
 
 `Display:swap` does not really matter, it is there to please _Lighthouse_.
 
+There are additional elements to be added to the head for optimisation. Overall you get:
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin>
+    <link rel="preload" crossorigin as="fetch"
+      href="https://fonts.googleapis.com/css?display=swap&family=Gentium+Basic">
+    <script>
+      // <@lemuria/font copy-paste source>
+      window['@lemuria/font']
+        ('https://fonts.googleapis.com/css?display=swap&family=Gentium+Basic')
+    </script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1> Summertime </h1>
+    <p> and the livin's easy </p>
+  </body>
+</html>
+```
+
 If a function needs to be added on the server for SSR, it can be imported via the default export (see the SSR example below):
 
 ```js
@@ -67,13 +91,15 @@ import font from '@lemuria/font'
 ## <code><ins>font</ins>(</code><sub><br/>&nbsp;&nbsp;`url: string,`<br/>&nbsp;&nbsp;`defaultRanges=: Object,`<br/></sub><code>): <i>void</i></code>
  - <kbd><strong>url*</strong></kbd> <em>`string`</em>: The full url of the web-font to load, e.g.,
 `https://fonts.googleapis.com/css?display=swap&family=Limelight`.
- - <kbd>defaultRanges</kbd> <em>`Object`</em> (optional): When the stylesheet was loaded before body was parsed, there's no way for the script to know which fonts to load based on `unicode-range` property of the `@font-face`. By passing an object with ranges, only specific fonts will be preloaded. Must be an object in the following format:
+ - <kbd>defaultRanges</kbd> <em>`Object`</em> (optional): When the stylesheet was loaded before body was parsed, there's no way for the script to know which fonts to load based on `unicode-range` property of the `@font-face`. By passing an object with ranges, only specific fonts will be preloaded. Must be an object in the following format (taken directly from the stylesheet):
 ```js
-{ 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD': true }
+{
+  'U+0000-00FF, U+0131, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD': true
+}
 ```
 
 ```jsx
-import font from '../src'
+import font from '@lemuria/font'
 import idio from '@idio/idio'
 import render from '@depack/render'
 
