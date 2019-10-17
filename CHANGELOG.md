@@ -1,5 +1,9 @@
 ## 17 October 2019
 
+### [1.0.2](https://github.com/kumarikandam/font/compare/v1.0.1...v1.0.2)
+
+- [build] Build the package.
+
 ### [1.0.1](https://github.com/kumarikandam/font/compare/v1.0.0...v1.0.1)
 
 - [fix] Fix logging of the performance message.

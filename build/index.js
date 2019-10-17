@@ -3,7 +3,13 @@ const GOOGLE_URL = 'https://fonts.googleapis.com/css?display=swap&family='
 
 /**
  * Loads A Web Font Stylesheet (e.g., Google Fonts) Without Render Blocking And Multiple Layout Updates.
- * @param {string} url The font URL.
+ * @param {string} url The full url of the web-font to load, e.g., `https://fonts.googleapis.com/css?display=swap&family=Limelight`.
+ * @param {Object=} [defaultRanges] When the stylesheet was loaded before body was parsed, there's no way for the script to know which fonts to load based on `unicode-range` property of the `@font-face`. By passing an object with ranges, only specific fonts will be preloaded. Must be an object in the following format (taken directly from the stylesheet):
+```js
+{
+  'U+0000-00FF, U+0131, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD': true
+}
+```
  */
 function font(url, defaultRanges = {}) {
   /**
@@ -82,8 +88,8 @@ function font(url, defaultRanges = {}) {
       link.href = address
       link.rel = 'preload'
       link.as = 'font'
-      performance.mark('link-preload-start'+i)
-      link.onload = () => loadedCb(i)
+      performance.mark('link-preload-start'+(i+1))
+      link.onload = () => loadedCb(i+1)
       link.setAttribute('crossorigin', true)
       fragment.appendChild(link)
     })
@@ -119,6 +125,9 @@ function font(url, defaultRanges = {}) {
   }
 }
 
+const debug = font
+
 // latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD'
 
 module.exports = font
+module.exports.debug = debug
