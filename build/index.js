@@ -12,6 +12,22 @@ const GOOGLE_URL = 'https://fonts.googleapis.com/css?display=swap&family='
 ```
  */
 function font(url, defaultRanges = {}) {
+  function DOMTokenListSupports(tokenList, token) {
+    if (!tokenList || !tokenList.supports) {
+      return false
+    } try { return tokenList.supports(token) } catch (e) {
+      return false }
+  }
+  const link = document.createElement('link')
+  const linkSupportsPreload = DOMTokenListSupports(link.relList, 'preload')
+
+  if (!linkSupportsPreload) {
+    link.rel = 'stylesheet'
+    link.href = url
+    document.head.appendChild(link)
+    return
+  }
+
   /**
    * @param {string} address The address to load.
    * @param {function(string)} cb The callback to call on complete.
@@ -52,7 +68,8 @@ function font(url, defaultRanges = {}) {
     const fonts = []
     let a
     while((a = re.exec(result))) {
-      const [, u, range] = a
+      const u = a[1]
+      const range = a[2]
       fonts.push({ url: u, range })
       ranges[range] = 1
     }
@@ -88,8 +105,9 @@ function font(url, defaultRanges = {}) {
       link.href = address
       link.rel = 'preload'
       link.as = 'font'
-      performance.mark('link-preload-start'+(i+1))
-      link.onload = () => loadedCb(i+1)
+      const j = i + 1
+      performance.mark('link-preload-start'+j)
+      link.onload = () => loadedCb(j)
       link.setAttribute('crossorigin', true)
       fragment.appendChild(link)
     })
