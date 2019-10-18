@@ -1,3 +1,10 @@
+## 18 October 2019
+
+### [1.0.4](https://github.com/kumarikandam/font/compare/v1.0.3...v1.0.4)
+
+- [feature] Strip the performance markers off the function, provide performance version.
+- [feature] Check for `preload` support for safe fallback.
+
 ## 17 October 2019
 
 ### [1.0.3](https://github.com/kumarikandam/font/compare/v1.0.2...v1.0.3)
