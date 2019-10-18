@@ -26,6 +26,8 @@ yarn add @lemuria/font
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
+  * [Fallback](#fallback)
+  * [SSR](#ssr)
 - [`font(url, defaultRanges=): void`](#fonturl-stringdefaultranges-object-void)
 - [Copyright](#copyright)
 
@@ -38,12 +40,10 @@ yarn add @lemuria/font
 The compiled function should be added first thing to the head:
 
 ```js
-(function(){function v(g){var e=0;return function(){return e<g.length?{done:!1,value:g[e++]}:{done:!0}}}function w(g){var e="undefined"!=typeof Symbol&&Symbol.iterator&&g[Symbol.iterator];return e?e.call(g):{next:v(g)}};window["@lemuria/font"]=function(g,e){function q(b){b&&(performance.mark("link-preload-end"+b),performance.measure("link-preload","link-preload-start"+b,"link-preload-end"+b));r++;r>=n.length&&(b=document.createElement("style"),b.innerHTML=p,document.head.appendChild(b),performance.mark("agf-end"),performance.measure("@lemuria/font","agf-start","agf-end"))}function x(b,k,a){a=void 0===a?"":a;performance.mark("xhr-start"+a);var f=new XMLHttpRequest;f.onreadystatechange=function(){4==f.readyState&&
-(200==f.status?(k(f.responseText),performance.mark("xhr-end"+a),performance.measure("xhr"+a,"xhr-start"+a,"xhr-end"+a)):console.error("Error loading webfont: server responded with code %s at %s",f.status,b))};f.open("GET",b);try{f.send(null)}catch(l){console.error(l)}}function y(b){for(var k=/url\((.+?)\).*?;\s+unicode-range: (.+?);/g,a={},f=[],l;l=k.exec(b);){var m=w(l);m.next();l=m.next().value;m=m.next().value;f.push({url:l,a:m});a[m]=1}a=Object.keys(a).reduce(function(c,d){var h=d.split(/,\s/).map(function(z){return z.replace("U+",
-"\\u").replace("-","-\\u")}).join("").toLowerCase();c[d]=new RegExp("["+h+"]");return c},{});var t=document.body?document.body.textContent:"",A=t?Object.keys(a).reduce(function(c,d){a[d].test(t)&&(c[d]=!0);return c},{}):Object.keys(a).reduce(function(c,d){d in e&&(c[d]=!0);return c},{});n=f.filter(function(c){return c.a in A}).map(function(c){return c.url});if(!n.length)return q();var u=document.createDocumentFragment();n.forEach(function(c,d){var h=document.createElement("link");h.href=c;h.rel="preload";
-h.as="font";performance.mark("link-preload-start"+(d+1));h.onload=function(){return q(d+1)};h.setAttribute("crossorigin",!0);u.appendChild(h)});document.head.appendChild(u)}e=void 0===e?{}:e;performance.mark("agf-start");var p;(function(b,k){x(b.href,function(a){p=a;y(p)},"-"+(void 0===k?"link":k))})({href:g},"js");var n=[],r=0};}).call(this);
-
-//# sourceMappingURL=font.js.map
+(function(){window["@lemuria/font"]=function(q,k){function x(a){for(var f=/url\((.+?)\).*?;\s+unicode-range: (.+?);/g,b={},d=[],h;h=f.exec(a);){var r=h[2];d.push({url:h[1],a:r});b[r]=1}b=Object.keys(b).reduce(function(c,e){var g=e.split(/,\s/).map(function(l){return l.replace("U+","\\u").replace("-","-\\u")}).join("").toLowerCase();c[e]=new RegExp("["+g+"]");return c},{});var t=document.body?document.body.textContent:"",y=t?Object.keys(b).reduce(function(c,e){b[e].test(t)&&(c[e]=!0);return c},{}):Object.keys(b).reduce(function(c,
+e){e in k&&(c[e]=!0);return c},{});m=d.filter(function(c){return c.a in y}).map(function(c){return c.url});if(!m.length)return u();var v=document.createDocumentFragment();m.forEach(function(c,e){var g=document.createElement("link");g.href=c;g.rel="preload";g.as="font";var l=e+1;;g.onload=function(){return u(l)};g.setAttribute("crossorigin",!0);v.appendChild(g)});document.head.appendChild(v)}k=void 0===k?{}:k;var n=document.createElement("link");if(function(a,
+f){if(!a||!a.supports)return!1;try{return a.supports(f)}catch(b){return!1}}(n.relList,"preload")){var z=function(a,f,b){b=void 0===b?"":b;;var d=new XMLHttpRequest;d.onreadystatechange=function(){4==d.readyState&&(200==d.status?(f(d.responseText)):console.error("Error loading webfont: server responded with code %s at %s",d.status,a))};d.open("GET",a);try{d.send(null)}catch(h){console.error(h)}};
+;var p;(function(a,f){z(a.href,function(b){p=b;x(p)},"-"+(void 0===f?"link":f))})({href:q},"js");var m=[],w=0,u=function(a){w++;w>=m.length&&(a=document.createElement("style"),a.innerHTML=p,document.head.appendChild(a))}}else n.rel="stylesheet",n.href=q,document.head.appendChild(n)};}).call(this);
 ```
 
 Then it can be called:
@@ -52,16 +52,16 @@ Then it can be called:
 window['@lemuria/font']('https://fonts.googleapis.com/css?display=swap&family=Gentium+Basic')
 ```
 
-`Display:swap` does not really matter, it is there to please _Lighthouse_.
+The `display=swap` param does not really matter, it is there to please _Lighthouse_.
 
 There are additional elements to be added to the head for optimisation. Overall you get:
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" crossorigin as="fetch"
       href="https://fonts.googleapis.com/css?display=swap&family=Gentium+Basic">
     <script>
@@ -78,10 +78,30 @@ There are additional elements to be added to the head for optimisation. Overall 
 </html>
 ```
 
+<details>
+<summary><em>The debug version with performance markers:</em></summary>
+
+```js
+(function(){window["@lemuria/font"]=function(q,k){function x(a){for(var f=/url\((.+?)\).*?;\s+unicode-range: (.+?);/g,b={},d=[],h;h=f.exec(a);){var r=h[2];d.push({url:h[1],a:r});b[r]=1}b=Object.keys(b).reduce(function(c,e){var g=e.split(/,\s/).map(function(l){return l.replace("U+","\\u").replace("-","-\\u")}).join("").toLowerCase();c[e]=new RegExp("["+g+"]");return c},{});var t=document.body?document.body.textContent:"",y=t?Object.keys(b).reduce(function(c,e){b[e].test(t)&&(c[e]=!0);return c},{}):Object.keys(b).reduce(function(c,
+e){e in k&&(c[e]=!0);return c},{});m=d.filter(function(c){return c.a in y}).map(function(c){return c.url});if(!m.length)return u();var v=document.createDocumentFragment();m.forEach(function(c,e){var g=document.createElement("link");g.href=c;g.rel="preload";g.as="font";var l=e+1;performance.mark("link-preload-start"+l);g.onload=function(){return u(l)};g.setAttribute("crossorigin",!0);v.appendChild(g)});document.head.appendChild(v)}k=void 0===k?{}:k;var n=document.createElement("link");if(function(a,
+f){if(!a||!a.supports)return!1;try{return a.supports(f)}catch(b){return!1}}(n.relList,"preload")){var z=function(a,f,b){b=void 0===b?"":b;performance.mark("xhr-start"+b);var d=new XMLHttpRequest;d.onreadystatechange=function(){4==d.readyState&&(200==d.status?(f(d.responseText),performance.mark("xhr-end"+b),performance.measure("xhr"+b,"xhr-start"+b,"xhr-end"+b)):console.error("Error loading webfont: server responded with code %s at %s",d.status,a))};d.open("GET",a);try{d.send(null)}catch(h){console.error(h)}};
+performance.mark("agf-start");var p;(function(a,f){z(a.href,function(b){p=b;x(p)},"-"+(void 0===f?"link":f))})({href:q},"js");var m=[],w=0,u=function(a){a&&(performance.mark("link-preload-end"+a),performance.measure("link-preload","link-preload-start"+a,"link-preload-end"+a));w++;w>=m.length&&(a=document.createElement("style"),a.innerHTML=p,document.head.appendChild(a),performance.mark("agf-end"),performance.measure("@lemuria/font","agf-start","agf-end"))}}else n.rel="stylesheet",n.href=q,document.head.appendChild(n)};}).call(this);
+```
+</details>
+
+### Fallback
+
+If the browser does not support `preload` rel on links, the style will just be added as a stylesheet, since there's no benefit to this package. Even if the fonts' urls to be extracted from the stylesheet, and downloaded with XHR, they wouldn't be cached and the re-download will be forced by style.
+
+### SSR
+
 If a function needs to be added on the server for SSR, it can be imported via the default export (see the SSR example below):
 
 ```js
-import font from '@lemuria/font'
+import font, {
+  debug as debugFont,
+  performance as performanceFont,
+} from '@lemuria/font'
 ```
 
 <p align="center"><a href="#table-of-contents">
